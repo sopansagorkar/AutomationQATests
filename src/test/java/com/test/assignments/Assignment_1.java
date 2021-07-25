@@ -37,7 +37,7 @@ public class Assignment_1 {
 
 	@AfterTest
 	public void tearDown() {
-		driver.close();
+		driver.quit();
 	}
 
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -47,11 +48,13 @@ public class Assignment_2 {
 		actions.moveToElement(driver.findElement(
 				By.cssSelector("div.rv.review-action.ng-enter-element > review-star > div > svg:nth-child(4)"))).click()
 				.build().perform(); // Mouse over and Clicking on 4 start rating
-		driver.findElement(By.xpath("//span[contains(text(),'Select')]")).click();
-		driver.findElement(By.cssSelector("write-review > div > ng-dropdown > div > ul > li:nth-child(2)")).click();
+	
 		driver.findElement(By.xpath("//*[@id='reviews-section']//textarea")).click();
 		driver.findElement(By.xpath("//*[@id='reviews-section']//textarea"))
 				.sendKeys(GetProperties.wallethubReviewText); // Getting review text from property file
+		
+		driver.findElement(By.xpath("//span[contains(text(),'Select')]")).click();
+		driver.findElement(By.cssSelector("write-review > div > ng-dropdown > div > ul > li:nth-child(2)")).click();
 		driver.findElement(By.xpath("//div[contains(text(),'Submit')]")).click();
 		driverWait.until(
 				ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[contains(text(),'Continue')]"))));
@@ -60,8 +63,13 @@ public class Assignment_2 {
 
 	@Test(dependsOnMethods = "writeReview")
 	public void verifyReview() {
-		driver.navigate().to(GetProperties.wallethubReviewUrl);
+		driver.navigate().to(GetProperties.wallethubProfileUrl);
 		Assert.assertEquals("I RECOMMEND", driver.findElement(By.xpath("//h2[@class='pr-rec-subtitle']")).getText());
+	}
+	
+	@AfterTest
+	public void tearDown() {
+		driver.quit();
 	}
 
 }
